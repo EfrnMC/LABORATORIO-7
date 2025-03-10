@@ -3,6 +3,12 @@
 
 using namespace std;
 
+// Definición de colores ANSI
+#define RESET   "\033[0m"     // Restablece color
+#define RED     "\033[31m"    // Rojo
+#define GREEN   "\033[32m"    // Verde
+#define BLUE    "\033[36m"    // Celeste
+
 class CuentaBancaria {
 private:
     double saldo;
@@ -22,53 +28,57 @@ public:
 
     void depositar(double monto) {
         if (!activa) {
-            cout << "Error: La cuenta #" << numeroCuenta << " esta inactiva. No se puede depositar." << endl;
+            cout << RED << "Error: La cuenta #" << numeroCuenta << " esta inactiva. No se puede depositar." << RESET << endl;
             return;
         }
         saldo += monto;
-        cout << "Deposito exitoso. Nuevo saldo: Q" << saldo << endl;
+        cout << GREEN << "Deposito exitoso. Nuevo saldo: Q" << saldo << RESET << endl;
     }
 
     void retirar(double monto) {
         if (!activa) {
-            cout << "Error: La cuenta #" << numeroCuenta << " esta inactiva. No se puede retirar dinero." << endl;
+            cout << RED << "Error: La cuenta #" << numeroCuenta << " esta inactiva. No se puede retirar dinero." << RESET << endl;
             return;
         }
         if (monto > saldo) {
             intentosFallidos++;
-            cout << "Fondos insuficientes. Intento #" << intentosFallidos << " de 3." << endl;
+            cout << RED << "Fondos insuficientes. Intento #" << intentosFallidos << " de 3." << RESET << endl;
             if (intentosFallidos >= 3) {
                 activa = false;
-                cout << "La cuenta ha sido BLOQUEADA por exceder intentos de retiro sin fondos." << endl;
+                cout << RED << "La cuenta ha sido BLOQUEADA por exceder intentos de retiro sin fondos." << RESET << endl;
             }
         }
         else {
             saldo -= monto;
-            cout << "Retiro exitoso. Nuevo saldo: Q" << saldo << endl;
+            cout << GREEN << "Retiro exitoso. Nuevo saldo: Q" << saldo << RESET << endl;
             intentosFallidos = 0;  // Reiniciar intentos si el retiro es exitoso
         }
     }
 
     void mostrarDetallesCuenta() {
         string estadoTexto;
+        string estadoColor;
 
         if (intentosFallidos >= 3) {
             estadoTexto = "BLOQUEADA";
+            estadoColor = RED;
         }
         else if (activa) {
             estadoTexto = "ACTIVA";
+            estadoColor = GREEN;
         }
         else {
             estadoTexto = "INACTIVA";
+            estadoColor = RED;
         }
 
         cout << "\n+--------------------------------+" << endl;
         cout << "|       DETALLES DE LA CUENTA    |" << endl;
         cout << "+--------------------------------+" << endl;
-        cout << "| Titular:        " << setw(15) << titular << "|" << endl;
+        cout << "| Titular:       " << BLUE << setw(15) << titular << RESET << " |" << endl;
         cout << "| Numero Cuenta:      " << setw(10) << numeroCuenta << " |" << endl;
         cout << "| Saldo:               Q" << setw(8) << saldo << " |" << endl;
-        cout << "| Estado:           " << setw(12) << estadoTexto << " |" << endl;
+        cout << "| Estado:           " << estadoColor << setw(12) << estadoTexto << RESET << " |" << endl;
         cout << "+--------------------------------+" << endl;
     }
 
@@ -79,13 +89,13 @@ public:
 
     void inhabilitarCuenta() {
         activa = false;
-        cout << "La cuenta #" << numeroCuenta << " ha sido INHABILITADA." << endl;
+        cout << RED << "La cuenta #" << numeroCuenta << " ha sido INHABILITADA." << RESET << endl;
     }
 
     void habilitarCuenta() {
         activa = true;
         intentosFallidos = 0;  // Reiniciar intentos si se habilita
-        cout << "La cuenta #" << numeroCuenta << " ha sido HABILITADA." << endl;
+        cout << GREEN << "La cuenta #" << numeroCuenta << " ha sido HABILITADA." << RESET << endl;
     }
 
     int getNumeroCuenta() {
@@ -114,7 +124,7 @@ int main() {
         }
 
         if (numCuenta < 1 || numCuenta > 30) {
-            cout << "Numero de cuenta invalido." << endl;
+            cout << RED << "Numero de cuenta invalido." << RESET << endl;
             continue;
         }
 
@@ -127,7 +137,7 @@ int main() {
 
         do {
             cout << "\nCuenta #" << cuenta.getNumeroCuenta();
-            cout << (cuenta.estaActiva() ? " (ACTIVA)" : " (INACTIVA)") << endl;
+            cout << (cuenta.estaActiva() ? GREEN " (ACTIVA)" RESET : RED " (INACTIVA)" RESET) << endl;
             cout << "Ingrese la opcion: " << endl;
             cout << "1. DEPOSITAR" << endl;
             cout << "2. RETIRAR" << endl;
@@ -173,7 +183,7 @@ int main() {
                 salir = true;
                 break;
             default:
-                cout << "Opcion invalida." << endl;
+                cout << RED << "Opcion invalida." << RESET << endl;
             }
         } while (opcion != 4 && opcion != 7);
 

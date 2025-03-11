@@ -18,7 +18,7 @@ private:
     string titular;  // Titular de la cuenta
 
 public:
-    CuentaBancaria(int num, double saldoInicial = 0, string nombreTitular = "Sin_Titular") {
+    CuentaBancaria(int num, double saldoInicial = 0, string nombreTitular = "Sin_Titular") { //se Establece los atributos de la clase Cuenta Bancaria
         numeroCuenta = num;
         saldo = saldoInicial;
         activa = true;
@@ -26,7 +26,7 @@ public:
         titular = nombreTitular;
     }
 
-    void depositar(double monto) {
+    void depositar(double monto) { //Se crea la función para depositar en la cuenta
         if (!activa) {
             cout << RED << "Error: La cuenta #" << numeroCuenta << " esta inactiva. No se puede depositar." << RESET << endl;
             return;
@@ -35,12 +35,12 @@ public:
         cout << GREEN << "Deposito exitoso. Nuevo saldo: Q" << saldo << RESET << endl;
     }
 
-    void retirar(double monto) {
+    void retirar(double monto) {//Se crea la función para retirar en la cuenta
         if (!activa) {
             cout << RED << "Error: La cuenta #" << numeroCuenta << " esta inactiva. No se puede retirar dinero." << RESET << endl;
             return;
         }
-        if (monto > saldo) {
+        if (monto > saldo) {  //Se establecen las condicionales para verificar los intentos fallidos
             intentosFallidos++;
             cout << RED << "Fondos insuficientes. Intento #" << intentosFallidos << " de 3." << RESET << endl;
             if (intentosFallidos >= 3) {
@@ -55,7 +55,7 @@ public:
         }
     }
 
-    void mostrarDetallesCuenta() {
+    void mostrarDetallesCuenta() { // Función para mostrar los detalles de la cuenta
         string estadoTexto;
         string estadoColor;
 
@@ -82,34 +82,34 @@ public:
         cout << "+--------------------------------+" << endl;
     }
 
-    void asignarTitular(string nombre) {
+    void asignarTitular(string nombre) {  //Función para asignar a un titular a la cuenta
         titular = nombre;
         cout << "Titular asignado correctamente." << endl;
     }
 
-    void inhabilitarCuenta() {
+    void inhabilitarCuenta() { //Funcion para habilitar cuenta
         activa = false;
         cout << RED << "La cuenta #" << numeroCuenta << " ha sido INHABILITADA." << RESET << endl;
     }
 
-    void habilitarCuenta() {
+    void habilitarCuenta() { //Funcion para inhabilitar cuenta
         activa = true;
         intentosFallidos = 0;  // Reiniciar intentos si se habilita
         cout << GREEN << "La cuenta #" << numeroCuenta << " ha sido HABILITADA." << RESET << endl;
     }
 
-    int getNumeroCuenta() {
+    int getNumeroCuenta() { //Función para obtener el numero de cuenta a la cual queremos acceder
         return numeroCuenta;
     }
 
-    bool estaActiva() {
+    bool estaActiva() { //Función parae establecer si la cuenta esta activa o no
         return activa;
     }
 };
 
 int main() {
     int numCuenta, opcion;
-    double monto;
+    double monto;           //Se declaran las variables para inciar el switch
     string nombreTitular;
     bool salir = false;
     CuentaBancaria cuenta(0, 0); // Cuenta inicial sin número válido
@@ -118,13 +118,13 @@ int main() {
         cout << "\nIngrese el numero de cuenta (1-30) o 0 para salir: ";
         cin >> numCuenta;
 
-        if (numCuenta == 0) {
+        if (numCuenta == 0) {               //Ciclo para ingresar la cueta a la cual queremos acceder
             salir = true;
             break;
         }
 
         if (numCuenta < 1 || numCuenta > 30) {
-            cout << RED << "Numero de cuenta invalido." << RESET << endl;
+            cout << RED << "Numero de cuenta invalido." << RESET << endl; //Parte del ciclo para mostrar error si la cuenta no existe
             continue;
         }
 
@@ -140,7 +140,7 @@ int main() {
             cout << (cuenta.estaActiva() ? GREEN " (ACTIVA)" RESET : RED " (INACTIVA)" RESET) << endl;
             cout << "Ingrese la opcion: " << endl;
             cout << "1. DEPOSITAR" << endl;
-            cout << "2. RETIRAR" << endl;
+            cout << "2. RETIRAR" << endl;                   //Se inicializan las opciones para el switch
             cout << "3. CONSULTAR SALDO" << endl;
             cout << "4. CAMBIAR DE CUENTA" << endl;
             cout << "5. HABILITAR/INHABILITAR CUENTA" << endl;
@@ -167,7 +167,7 @@ int main() {
                 break;
             case 5:
                 if (cuenta.estaActiva()) {
-                    cuenta.inhabilitarCuenta();
+                    cuenta.inhabilitarCuenta();                 //Se crean los casos para hacer las acciones correspondientes.
                 }
                 else {
                     cuenta.habilitarCuenta();
